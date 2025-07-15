@@ -1,5 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
 
+if (!process.env.BREVO_API_KEY) {
+  throw new Error("Missing BREVO_API_KEY in environment variables")
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { to, subject, html } = await request.json()
@@ -9,7 +13,7 @@ export async function POST(request: NextRequest) {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "api-key": process.env.BREVO_API_KEY!,
+        "api-key": process.env.BREVO_API_KEY,
       },
       body: JSON.stringify({
         sender: {

@@ -24,6 +24,29 @@ function generateMJML(blocks: EmailBlock[]): string {
   const mjmlBlocks = blocks
     .map((block) => {
       switch (block.type) {
+        case "section":
+          return `
+          <mj-section>
+            <mj-column>
+              ${generateMJML(block.children || [])}
+            </mj-column>
+          </mj-section>
+        `
+        case "heading":
+          return `
+          <mj-section>
+            <mj-column>
+              <mj-text
+                font-size="${block.styles?.fontSize || "24px"}"
+                font-weight="bold"
+                color="${block.styles?.color || "#000000"}"
+                align="${block.styles?.textAlign || "left"}"
+              >
+                ${block.content || "Your heading here"}
+              </mj-text>
+            </mj-column>
+          </mj-section>
+        `
         case "text":
           return `
           <mj-section>
