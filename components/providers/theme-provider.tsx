@@ -11,17 +11,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    // Load theme from localStorage on mount
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null
-    if (savedTheme) {
-      dispatch(setTheme(savedTheme))
+    if (typeof window !== "undefined") {
+      // Load theme from localStorage on mount
+      const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null
+      if (savedTheme) {
+        dispatch(setTheme(savedTheme))
+      }
     }
   }, [dispatch])
 
   useEffect(() => {
-    // Apply theme to document and save to localStorage
-    document.documentElement.classList.toggle("dark", theme === "dark")
-    localStorage.setItem("theme", theme)
+    if (typeof window !== "undefined") {
+      // Apply theme to document and save to localStorage
+      document.documentElement.classList.toggle("dark", theme === "dark")
+      localStorage.setItem("theme", theme)
+    }
   }, [theme])
 
   return <div className={theme}>{children}</div>
